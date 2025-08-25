@@ -1,0 +1,17 @@
+{
+    "all": true,
+    "exclude": [
+        "eslint.config.js",
+        "coverage",
+        "examples",
+        "src/structures",
+        "test"
+    ],
+    "output": "reports",
+    "reporter": [
+        "text"
+    ],
+    "check-coverage": true,
+    "lines": 60,
+    "functions": 60
+}

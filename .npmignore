@@ -1,0 +1,6 @@
+doc
+*.log
+*.tmp
+.vscode
+.github
+node_modules
