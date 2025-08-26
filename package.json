@@ -1,7 +1,7 @@
 {
-  "name": "@adeister-test-org/ts-frontend-base",
+  "name": "@adeister-test-org/web-caller",
   "version": "0.0.0",
-  "description": "TypeScript frontend template repository.",
+  "description": "React frontend for making API calls.",
   "main": "index.tsx",
   "type": "module",
   "scripts": {
@@ -16,7 +16,7 @@
   },
   "license": "MIT",
   "publishConfig": {
-    "access": "public"
+    "access": "restricted"
   },
   "devDependencies": {
     "@aarondeister98/linter": "^1.0.0",
@@ -48,6 +48,8 @@
     "@emotion/styled": "^11.14.1",
     "@mui/icons-material": "^7.3.1",
     "@mui/material": "^7.3.1",
-    "react-dom": "^19.1.1"
+    "axios": "^1.11.0",
+    "react-dom": "^19.1.1",
+    "zustand": "^5.0.8"
   }
 }
