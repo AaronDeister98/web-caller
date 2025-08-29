@@ -1,26 +1,17 @@
 import { Box, Tabs, Tab, TableContainer, Paper, Table, TableCell, TableRow, TableHead, TableBody } from "@mui/material";
-import { AxiosRequestHeaders, AxiosResponse, AxiosResponseHeaders } from "axios";
+import { AxiosRequestConfig, AxiosRequestHeaders, AxiosResponse, AxiosResponseHeaders } from "axios";
 import KeyValueInputTable from "./tables/params-table";
 import { RequestProps } from "./core-content";
+import { useState } from "react";
+import { AuthSelect } from "./selects/auth-select";
+import { useStore } from "zustand";
+import { headersStore } from "./contexts/request/headers";
+import { paramsStore } from "./contexts/request/params";
 
 interface TabPanelProps {
     children?: React.ReactNode;
     index: number;
     value: number;
-}
-
-interface RequestState {
-    method: string;
-    url: string;
-    body: string;
-    headers: AxiosRequestHeaders;
-    params: Record<string, string>;
-}
-
-interface ResponseState {
-    headers: AxiosResponseHeaders | Record<string, string>;
-    data: any;
-    status: number | null;
 }
 
 function CustomTabPanel(props: TabPanelProps) {
@@ -39,10 +30,13 @@ function CustomTabPanel(props: TabPanelProps) {
     );
 }
 
-export function RequestTabBox(props: { state: RequestProps, onChange: (props: RequestProps) => void, requestTabValue: number, setRequestTabValue: (value: number) => void }) {
+export function RequestTabBox(props: { state: AxiosRequestConfig, onChange: (props: RequestProps) => void, requestTabValue: number, setRequestTabValue: (value: number) => void }) {
     const { state, onChange, requestTabValue, setRequestTabValue } = props;
+    const { paramsState, setParamsState } = useStore(paramsStore);
+    const { headersState, setHeadersState } = useStore(headersStore);
+
     return (
-        <Box padding={10} textAlign='center'>
+        <Box padding={5} textAlign='center'>
             <h2>Request</h2>
             <Tabs value={requestTabValue} aria-label="Request Controls" centered>
                 <Tab label='Params' onClick={() => setRequestTabValue(0)} />
@@ -51,13 +45,13 @@ export function RequestTabBox(props: { state: RequestProps, onChange: (props: Re
                 <Tab label='Body' onClick={() => setRequestTabValue(3)} />
             </Tabs>
             <CustomTabPanel value={requestTabValue} index={0}>
-                <KeyValueInputTable state={state.params} onChange={onChange} type='params'></KeyValueInputTable>
+                <KeyValueInputTable rows={paramsState} setRows={setParamsState} onChange={onChange} type='params'></KeyValueInputTable>
             </CustomTabPanel>
             <CustomTabPanel value={requestTabValue} index={1}>
-                <KeyValueInputTable state={state.headers} onChange={onChange} type='headers'></KeyValueInputTable>
+                <KeyValueInputTable rows={headersState} setRows={setHeadersState} onChange={onChange} type='headers'></KeyValueInputTable>
             </CustomTabPanel>
             <CustomTabPanel value={requestTabValue} index={2}>
-                Item Three
+                <AuthSelect onChange={onChange}></AuthSelect>
             </CustomTabPanel>
             <CustomTabPanel value={requestTabValue} index={3}>
                 Item Four
@@ -73,7 +67,7 @@ function createData(key: string, value: string) {
 export function ResponseTabBox(props: { responseState?: AxiosResponse, responseTabValue: number, setResponseTabValue: (value: number) => void }) {
     const headers = [];
     if (!props.responseState) {
-        return <Box padding={10} textAlign='center'>
+        return <Box padding={5} textAlign='center'>
             <h2>Response</h2>
             <p>No response yet.</p>
         </Box>
@@ -83,7 +77,7 @@ export function ResponseTabBox(props: { responseState?: AxiosResponse, responseT
         headers.push(createData(entry[0], entry[1] as string));
     }
     return (
-        <Box padding={10} textAlign='center'>
+        <Box padding={5} textAlign='center'>
             <h2>Response</h2>
             <Tabs value={responseTabValue} aria-label="Response Info" centered>
                 <Tab label='Headers' onClick={() => setResponseTabValue(0)} />
@@ -119,6 +113,7 @@ export function ResponseTabBox(props: { responseState?: AxiosResponse, responseT
                     <Box
                         component="pre"
                         sx={{
+                            textAlign: "left",
                             m: 0,
                             p: 2,
                             bgcolor: "background.default",
