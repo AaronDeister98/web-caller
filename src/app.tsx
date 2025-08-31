@@ -1,20 +1,26 @@
 
 
-import { Box, CssBaseline } from '@mui/material'
-import Button from '@mui/material/Button'
+import { Box, CssBaseline, ThemeProvider } from '@mui/material'
 import { TopMenuBar } from './components/top-bar'
-import { CoreContent } from './components/core-content'
-import { useState, createContext } from 'react';
+import { WorkbenchInterface } from './components/workbench/workbench-interface'
+import { useStore } from 'zustand';
+import { interfaceVisibilityStore } from './components/state/request-interface';
+import { themeStore } from './components/theme';
+import { AboutBlock } from './components/about';
+
 
 
 export default function App() {
-    const [authState, setAuthState] = useState<{ authType: 'basic' | 'bearer' | '', token?: string, username?: string, password?: string }>({ authType: '' });
-    const AuthContext = createContext(authState);
+    const { activeInterface } = useStore(interfaceVisibilityStore)
+    const { themeState } = useStore(themeStore)
     return (
         <div>
-            <CssBaseline />
-            <TopMenuBar />
-            <CoreContent />
+            <ThemeProvider theme={themeState}>
+                <CssBaseline />
+                <TopMenuBar />
+                {activeInterface === 'Workbench' && <WorkbenchInterface />}
+                {activeInterface === 'About' && <AboutBlock />}
+            </ThemeProvider>
         </div >
     )
 }

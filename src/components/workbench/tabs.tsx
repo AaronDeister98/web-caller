@@ -1,12 +1,15 @@
 import { Box, Tabs, Tab, TableContainer, Paper, Table, TableCell, TableRow, TableHead, TableBody } from "@mui/material";
-import { AxiosRequestConfig, AxiosRequestHeaders, AxiosResponse, AxiosResponseHeaders } from "axios";
+import { AxiosRequestConfig, AxiosResponse } from "axios";
 import KeyValueInputTable from "./tables/params-table";
-import { RequestProps } from "./core-content";
-import { useState } from "react";
+import { RequestProps } from "./workbench-interface";
+
 import { AuthSelect } from "./selects/auth-select";
 import { useStore } from "zustand";
-import { headersStore } from "./contexts/request/headers";
-import { paramsStore } from "./contexts/request/params";
+import { headersStore } from "../state/request/headers";
+import { paramsStore } from "../state/request/params";
+import { themeStore } from "../theme";
+import JsonBlock from "./json-block";
+import { requestDataStore } from "../state/request/data";
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -30,10 +33,12 @@ function CustomTabPanel(props: TabPanelProps) {
     );
 }
 
-export function RequestTabBox(props: { state: AxiosRequestConfig, onChange: (props: RequestProps) => void, requestTabValue: number, setRequestTabValue: (value: number) => void }) {
-    const { state, onChange, requestTabValue, setRequestTabValue } = props;
+export function RequestTabBox(props: { onChange: (props: RequestProps) => void, requestTabValue: number, setRequestTabValue: (value: number) => void }) {
+    const { onChange, requestTabValue, setRequestTabValue } = props;
+    const { themeState } = useStore(themeStore)
     const { paramsState, setParamsState } = useStore(paramsStore);
     const { headersState, setHeadersState } = useStore(headersStore);
+    const { dataState, setDataState } = useStore(requestDataStore)
 
     return (
         <Box padding={5} textAlign='center'>
@@ -54,7 +59,7 @@ export function RequestTabBox(props: { state: AxiosRequestConfig, onChange: (pro
                 <AuthSelect onChange={onChange}></AuthSelect>
             </CustomTabPanel>
             <CustomTabPanel value={requestTabValue} index={3}>
-                Item Four
+                <JsonBlock data={dataState} themeMode={themeState.palette.mode} readOnly={false} onChange={setDataState} />
             </CustomTabPanel>
         </Box>
     )
@@ -65,6 +70,7 @@ function createData(key: string, value: string) {
 }
 
 export function ResponseTabBox(props: { responseState?: AxiosResponse, responseTabValue: number, setResponseTabValue: (value: number) => void }) {
+    const { themeState } = useStore(themeStore)
     const headers = [];
     if (!props.responseState) {
         return <Box padding={5} textAlign='center'>
@@ -109,27 +115,7 @@ export function ResponseTabBox(props: { responseState?: AxiosResponse, responseT
                 </TableContainer>
             </CustomTabPanel>
             <CustomTabPanel value={responseTabValue} index={1}>
-                <Paper elevation={2}>
-                    <Box
-                        component="pre"
-                        sx={{
-                            textAlign: "left",
-                            m: 0,
-                            p: 2,
-                            bgcolor: "background.default",
-                            color: "text.primary",
-                            fontFamily: "monospace",
-                            fontSize: "0.875rem",
-                            whiteSpace: "pre-wrap",
-                            wordBreak: "break-word",
-                            maxHeight: 400,
-                            overflowY: "auto",
-                            overflowX: "auto",
-                        }}
-                    >
-                        {JSON.stringify(props.responseState.data, null, 2)}
-                    </Box>
-                </Paper>
+                <JsonBlock readOnly={true} themeMode={themeState.palette.mode} data={props.responseState.data} onChange={() => { }} />
             </CustomTabPanel>
         </Box>
     )
