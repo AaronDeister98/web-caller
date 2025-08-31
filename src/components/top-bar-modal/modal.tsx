@@ -1,5 +1,6 @@
 import { Box, Modal } from "@mui/material";
 
+// Not currently used, but keeping around for if it's needed
 export default function OpenModal({ open, button, onClose }: {
     open: boolean;
     button: string;

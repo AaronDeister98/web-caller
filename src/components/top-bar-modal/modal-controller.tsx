@@ -1,6 +1,8 @@
 import { useState } from "react"
 import OpenModal from "./modal"
 
+
+// Not currently used, but keeping around for if it's needed
 export function ModalController() {
     const [modalState, setModalState] = useState({ open: false, button: "" });
 

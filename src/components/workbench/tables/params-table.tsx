@@ -1,11 +1,11 @@
-import React, { useState, useMemo, useEffect } from "react";
+import { useMemo, useEffect } from "react";
 import {
     Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
-    Paper, TextField, IconButton, Button, Box, Typography
+    Paper, TextField, IconButton, Button, Box
 } from "@mui/material";
 import { Add, Delete } from "@mui/icons-material";
-import { RequestProps } from "../core-content";
-import { Header, Param } from "../../structures/components";
+import { RequestProps } from "../workbench-interface";
+import { Header, Param } from "../../../structures/components";
 
 export default function KeyValueInputTable(props: {
     rows: Param[] | Header[], setRows: (value: Param[] | Header[]) => void, onChange?: (props: RequestProps) => void, type: 'params' | 'headers'
@@ -59,7 +59,7 @@ export default function KeyValueInputTable(props: {
                         <TableRow>
                             <TableCell>Key</TableCell>
                             <TableCell>Value</TableCell>
-                            {/* <TableCell align="center">Actions</TableCell> */}
+                            <TableCell align="center">Actions</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -106,16 +106,6 @@ export default function KeyValueInputTable(props: {
                     {props.type === 'params' ? 'Add Param' : 'Add Header'}
                 </Button>
             </Box>
-
-            {/* Local preview of the final object
-            <Box mt={3}>
-                <Typography variant="subtitle1">Params Object:</Typography>
-                <Paper variant="outlined" sx={{ p: 2, maxHeight: 200, overflow: "auto" }}>
-                    <pre style={{ margin: 0 }}>
-                        {JSON.stringify(keyValueObject, null, 2)}
-                    </pre>
-                </Paper>
-            </Box> */}
         </Box>
     );
 }

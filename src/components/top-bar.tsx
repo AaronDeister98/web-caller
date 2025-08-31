@@ -1,22 +1,24 @@
-import { AppBar, Box, IconButton, Menu, MenuItem, Modal, Toolbar } from '@mui/material'
+import { AppBar, Box, Drawer, IconButton, Menu, MenuItem, Modal, Toolbar } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu';
+import ModeNightIcon from '@mui/icons-material/ModeNight';
+import LightModeIcon from '@mui/icons-material/LightMode';
+
 /**
  * Top menu bar component.
  * @returns A styled AppBar with a title.
  */
-import React, { useState } from 'react';
-import OpenModal from './top-bar-modal/modal';
-import { button } from './button';
+import { useState } from 'react';
+import { SideDrawer } from './drawer';
+import { useStore } from 'zustand';
+import { themeStore } from './theme';
 
 
 
 
 export function TopMenuBar() {
-    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const [modalState, setModalState] = useState({ open: false, button: "" });
 
-    const openModal = (button: string) => setModalState({ open: true, button });
-    const closeModal = () => setModalState({ open: false, button: "" });
+    const { themeState, setThemeState } = useStore(themeStore)
+    const [drawerOpen, setDrawerOpen] = useState(false);
     return (
         <AppBar position="static">
             <Toolbar style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -25,39 +27,26 @@ export function TopMenuBar() {
                         edge="start"
                         color="inherit"
                         aria-label="menu"
-                        onClick={e => setAnchorEl(e.currentTarget)}
+                        onClick={e => setDrawerOpen(true)}
                     >
                         {<MenuIcon></MenuIcon>}
                         <span className="material-icons"></span>
                     </IconButton>
-                    <Menu
-                        anchorEl={anchorEl}
-                        open={Boolean(anchorEl)}
-                        onClose={() => setAnchorEl(null)}
-                    >
-                        <MenuItem onClick={() => {
-                            // setAnchorEl(null)
-                            openModal('1')
-                        }
-                        }>Item 1</MenuItem>
-                        <MenuItem onClick={() => {
-                            // setAnchorEl(null)
-                            openModal('2')
-                        }
-                        }>Item 2</MenuItem>
-                        <MenuItem onClick={() => {
-                            // setAnchorEl(null)
-                            openModal('3')
-                        }
-                        }>Item 3</MenuItem>
-                        <OpenModal
-                            open={modalState.open}
-                            onClose={() => { closeModal(), setAnchorEl(null) }}
-                            button={modalState.button}
-                        />
-                    </Menu>
+                    <SideDrawer state={drawerOpen} setState={setDrawerOpen}>
+
+                    </SideDrawer>
                 </div>
-                <h1>My Application</h1>
+                <h1>Web Caller</h1>
+                <IconButton
+                    edge="end"
+                    color="inherit"
+                    aria-label="theme"
+                    onClick={e => setThemeState(themeState.palette.mode)}
+                >
+                    {themeState.palette.mode === 'dark' && <ModeNightIcon />}
+                    {themeState.palette.mode === 'light' && <LightModeIcon />}
+                    <span className="material-icons"></span>
+                </IconButton>
             </Toolbar>
         </AppBar>
     )
