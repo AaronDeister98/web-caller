@@ -7,3 +7,8 @@ export interface AuthSelectProps {
 
 export interface Param { key: string, value: string }
 export interface Header { key: string, value: string }
+export enum SideBarButtonOption {
+    Workbench = 'Workbench',
+    History = 'History',
+    About = 'About'
+}
