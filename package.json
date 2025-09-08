@@ -1,7 +1,7 @@
 {
-  "name": "@adeister-test-org/web-caller",
-  "version": "0.0.0",
-  "description": "React frontend for making API calls.",
+  "name": "@adeister-test-org/http-workbench",
+  "version": "1.0.0",
+  "description": "React frontend for making HTTP calls.",
   "main": "index.tsx",
   "type": "module",
   "scripts": {

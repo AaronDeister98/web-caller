@@ -1,4 +1,4 @@
-# Web Caller
+# HTTP Workbench
 This is a locally-run tool used for making HTTP requests.
 
 ## Getting started
