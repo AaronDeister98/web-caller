@@ -36,7 +36,7 @@ export function TopMenuBar() {
 
                     </SideDrawer>
                 </div>
-                <h1>Web Caller</h1>
+                <h1>HTTP Workbench</h1>
                 <IconButton
                     edge="end"
                     color="inherit"

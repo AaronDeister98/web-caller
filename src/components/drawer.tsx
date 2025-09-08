@@ -1,7 +1,7 @@
 import { Box, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material"
 import WebIcon from '@mui/icons-material/Web'
 import { useStore } from "zustand"
-import { interfaceVisibilityStore } from "./state/request-interface"
+import { interfaceVisibilityStore } from "./state/interface-visibility"
 import { SideBarButtonOption } from "../structures/components"
 
 export function SideDrawer(props: { state: boolean, setState: (state: boolean) => void }) {
